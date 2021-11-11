@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="如何有效防止API的重放攻击？_调用API_产品常见问题_API 网关-阿里云请求签名说明文档_用户指南（调用API）_API 网关-阿里云    API重放攻击（Replay Attacks）又称重播攻击、回放攻击，这种攻击会不断恶意或欺诈性地重复一个有效的API请求。攻击者利用网络监听或者其他方式盗取API请求，进行一定的处理后，再把它重新发给认证服务器，是黑客常用的攻击方式之一。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何有效防止API的重放攻击？">
+<meta property="og:url" content="http://henray.me/2017/06/14/2017-06-14-API-Replay-Attacks/index.html">
+<meta property="og:site_name" content="ray&#39;s Notes">
+<meta property="og:description" content="如何有效防止API的重放攻击？_调用API_产品常见问题_API 网关-阿里云请求签名说明文档_用户指南（调用API）_API 网关-阿里云    API重放攻击（Replay Attacks）又称重播攻击、回放攻击，这种攻击会不断恶意或欺诈性地重复一个有效的API请求。攻击者利用网络监听或者其他方式盗取API请求，进行一定的处理后，再把它重新发给认证服务器，是黑客常用的攻击方式之一。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-11T11:13:05.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何有效防止API的重放攻击？">
+<meta name="twitter:description" content="如何有效防止API的重放攻击？_调用API_产品常见问题_API 网关-阿里云请求签名说明文档_用户指南（调用API）_API 网关-阿里云    API重放攻击（Replay Attacks）又称重播攻击、回放攻击，这种攻击会不断恶意或欺诈性地重复一个有效的API请求。攻击者利用网络监听或者其他方式盗取API请求，进行一定的处理后，再把它重新发给认证服务器，是黑客常用的攻击方式之一。">
+  <link rel="canonical" href="http://henray.me/2017/06/14/2017-06-14-API-Replay-Attacks/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>如何有效防止API的重放攻击？ | ray's Notes</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ray's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Read The Fucking Source Code !</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://henray.me/2017/06/14/2017-06-14-API-Replay-Attacks/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ray">
+      <meta itemprop="description" content="Stay Hungry , Stay Foolish !">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ray's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">如何有效防止API的重放攻击？
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2017-06-14 21:15:21" itemprop="dateCreated datePublished" datetime="2017-06-14T21:15:21+00:00">2017-06-14</time>
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2017/06/14/2017-06-14-API-Replay-Attacks/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/06/14/2017-06-14-API-Replay-Attacks/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p><a href="https://help.aliyun.com/knowledge_detail/50041.html" target="_blank" rel="noopener">如何有效防止API的重放攻击？_调用API_产品常见问题_API 网关-阿里云</a><br><a href="https://help.aliyun.com/document_detail/29475.html?spm=5176.7750041.2.1.lqdXhI" target="_blank" rel="noopener">请求签名说明文档_用户指南（调用API）_API 网关-阿里云</a>  </p>
+</blockquote>
+<p>API重放攻击（Replay Attacks）又称重播攻击、回放攻击，这种攻击会不断恶意或欺诈性地重复一个有效的API请求。攻击者利用网络监听或者其他方式盗取API请求，进行一定的处理后，再把它重新发给认证服务器，是黑客常用的攻击方式之一。</p>
+<a id="more"></a>
+
+<h3 id="HTTPS数据加密是否可以防止重放攻击？"><a href="#HTTPS数据加密是否可以防止重放攻击？" class="headerlink" title="HTTPS数据加密是否可以防止重放攻击？"></a>HTTPS数据加密是否可以防止重放攻击？</h3><p>否，加密可以有效防止明文数据被监听，但是却防止不了重放攻击。</p>
+<h3 id="使用签名防止重放攻击"><a href="#使用签名防止重放攻击" class="headerlink" title="使用签名防止重放攻击"></a>使用签名防止重放攻击</h3><p>使用签名之后，可以对请求的身份进行验证。但不同阻止重放攻击，即攻击者截获请求后，不对请求进行任何调整。直接使用截获的内容重新高频率发送请求。</p>
+<p>API网关提供了一套有效防止重放攻击的方法。开启API网关的放重放，需要您使用“阿里云APP”的认证方式。通过这种签名认证方式，每个请求只能被使用一次，从而防止重放。</p>
+<p>阿里云APP：是基于请求内容计算的数字签名，用于API网关识别用户身份。客户端调用API时，需要在请求中添加计算的签名。API网关在收到请求后会使用同样的方法计算签名，同用户计算的签名进行比较，相同则验证通过，不同则认证失败。这种认证的签名方式请参照：请求签名</p>
+<p>在API网关的签名中，提供X-Ca-Timestamp、X-Ca-Nonce两个可选HEADER，客户端调用API时一起使用这两个参数，可以达到防止重放攻击的目的。</p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><ol>
+<li>请求所有的内容都被加入签名计算，所以请求的任何修改，都会造成签名失败。</li>
+<li>不修改内容<ul>
+<li>X-Ca-Timestamp：发起请求的时间，可以取自机器的本地实现。当API网关收到请求时，会校验这个参数的有效性，误差不超过15分钟。</li>
+<li>X-Ca-Nonce：这个是请求的唯一标识，一般使用UUID来标识。API网关收到这个参数后会校验这个参数的有效性，同样的值，15分钟智能被使用一次。</li>
+</ul>
+</li>
+</ol>
+<h3 id="那么比如，下面这个请求："><a href="#那么比如，下面这个请求：" class="headerlink" title="那么比如，下面这个请求："></a>那么比如，下面这个请求：</h3><p><a href="http://a.com?uid=123×tamp=1480556543&amp;nonce=43f34f33&amp;sign=80b886d71449cb33355d017893720666" target="_blank" rel="noopener">http://a.com?uid=123×tamp=1480556543&amp;nonce=43f34f33&amp;sign=80b886d71449cb33355d017893720666</a></p>
+<p>sign  = md5({秘要}key1=val1&amp;key2=val2&amp;key3=val3…)</p>
+<p>服务端接到这个请求：</p>
+<ol>
+<li>先验证sign签名是否合理，证明请求参数没有被中途篡改。</li>
+<li>再验证timestamp是否过期，证明请求是在最近60s被发出的。</li>
+<li>最后验证nonce是否已经有了，证明这个请求不是60s内的重放请求。</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/11/15/2016-11-15-wechat-app-architecture-description/" rel="next" title="WeChat Architecture">
+                  <i class="fa fa-chevron-left"></i> WeChat Architecture
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2017/06/17/2017-06-17-Theos-on-NonJailbreak-Device/" rel="prev" title="非越狱机上使用Theos进行Hook">
+                  非越狱机上使用Theos进行Hook <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTPS数据加密是否可以防止重放攻击？"><span class="nav-number">1.</span> <span class="nav-text">HTTPS数据加密是否可以防止重放攻击？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用签名防止重放攻击"><span class="nav-number">2.</span> <span class="nav-text">使用签名防止重放攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#那么比如，下面这个请求："><span class="nav-number">4.</span> <span class="nav-text">那么比如，下面这个请求：</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.gif"
+      alt="ray">
+  <p class="site-author-name" itemprop="name">ray</p>
+  <div class="site-description" itemprop="description">Stay Hungry , Stay Foolish !</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/henrayluo" title="GitHub &rarr; https://github.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:HenrayLuo@gmail.com" title="E-Mail &rarr; mailto:HenrayLuo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://weibo.com/2784263224/profile?is_all=1" title="Weibo &rarr; http://weibo.com/2784263224/profile?is_all=1" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/henrayluo" title="Twitter &rarr; https://twitter.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.instagram.com/henrayluo" title="Instagram &rarr; https://www.instagram.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://music.163.com/#/user/home?id=6244670" title="NetEaseM &rarr; http://music.163.com/#/user/home?id=6244670" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>NetEaseM</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ray</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://henrayluo.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://henray.me/2017/06/14/2017-06-14-API-Replay-Attacks/";
+    this.page.identifier = "2017/06/14/2017-06-14-API-Replay-Attacks/";
+    this.page.title = '如何有效防止API的重放攻击？';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://henrayluo.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

@@ -1,7 +1,5 @@
 /* global NexT, CONFIG, Velocity */
 
-if (window.$ && window.$.Velocity) window.Velocity = window.$.Velocity;
-
 NexT.motion = {};
 
 NexT.motion.integrator = {
@@ -45,7 +43,7 @@ NexT.motion.middleWares = {
     function getMistLineSettings(element, translateX) {
       return {
         e: element,
-        p: {translateX},
+        p: {translateX: translateX},
         o: {
           duration     : 500,
           sequenceQueue: false
@@ -61,13 +59,13 @@ NexT.motion.middleWares = {
       });
     }
 
-    CONFIG.scheme === 'Mist' && logoLineTop && logoLineBottom
+    NexT.utils.isMist() && logoLineTop && logoLineBottom
     && sequence.push(
       getMistLineSettings(logoLineTop, '100%'),
       getMistLineSettings(logoLineBottom, '-100%')
     );
 
-    CONFIG.scheme === 'Muse' && image && pushImageToSequence();
+    NexT.utils.isMuse() && image && pushImageToSequence();
 
     title && sequence.push({
       e: title,
@@ -81,7 +79,7 @@ NexT.motion.middleWares = {
       o: {duration: 200}
     });
 
-    (CONFIG.scheme === 'Pisces' || CONFIG.scheme === 'Gemini') && image && pushImageToSequence();
+    (NexT.utils.isPisces() || NexT.utils.isGemini()) && image && pushImageToSequence();
 
     if (sequence.length > 0) {
       sequence[sequence.length - 1].o.complete = function() {
@@ -98,6 +96,7 @@ NexT.motion.middleWares = {
   },
 
   menu: function(integrator) {
+
     Velocity(document.querySelectorAll('.menu-item'), 'transition.slideDownIn', {
       display : null,
       duration: 200,
@@ -111,17 +110,8 @@ NexT.motion.middleWares = {
     }
   },
 
-  subMenu: function(integrator) {
-    var subMenuItem = document.querySelectorAll('.sub-menu .menu-item');
-    if (subMenuItem.length > 0) {
-      subMenuItem.forEach(element => {
-        element.style.opacity = 1;
-      });
-    }
-    integrator.next();
-  },
-
   postList: function(integrator) {
+
     var postBlock = document.querySelectorAll('.post-block, .pagination, .comments');
     var postBlockTransition = CONFIG.motion.transition.post_block;
     var postHeader = document.querySelectorAll('.post-header');
@@ -130,8 +120,9 @@ NexT.motion.middleWares = {
     var postBodyTransition = CONFIG.motion.transition.post_body;
     var collHeader = document.querySelectorAll('.collection-header');
     var collHeaderTransition = CONFIG.motion.transition.coll_header;
+    var hasPost = postBlock.length > 0;
 
-    if (postBlock.length > 0) {
+    if (hasPost) {
       var postMotionOptions = window.postMotionOptions || {
         stagger : 100,
         drag    : true,
@@ -153,16 +144,17 @@ NexT.motion.middleWares = {
         Velocity(collHeader, 'transition.' + collHeaderTransition, postMotionOptions);
       }
     }
-    if (CONFIG.scheme === 'Pisces' || CONFIG.scheme === 'Gemini') {
+    if (NexT.utils.isPisces() || NexT.utils.isGemini()) {
       integrator.next();
     }
   },
 
   sidebar: function(integrator) {
+    NexT.utils.updateSidebarPosition();
     var sidebarAffix = document.querySelector('.sidebar-inner');
     var sidebarAffixTransition = CONFIG.motion.transition.sidebar;
     // Only for Pisces | Gemini.
-    if (sidebarAffixTransition && (CONFIG.scheme === 'Pisces' || CONFIG.scheme === 'Gemini')) {
+    if (CONFIG.motion.transition.sidebar && (NexT.utils.isPisces() || NexT.utils.isGemini())) {
       Velocity(sidebarAffix, 'transition.' + sidebarAffixTransition, {
         display : null,
         duration: 200,

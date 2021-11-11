@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="经历过几个项目，看过一些代码后。如果还没有代码洁癖，那…我不希望和你一起 Work Or Play。之前找过 Objective-C 代码规范，发现谷歌的 Objective-C 代码规范页面 404 啦，然后看了下 Linux 内核代码。虽然是 c 语言的代码，但那种每行都在 80 个字符之内，能在各种设备上阅读的愉悦感，肯定能使你下定决心写一手干净利索的代码。无规矩，不成方圆。现在终于找到一篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="无规矩 不成方圆">
+<meta property="og:url" content="http://henray.me/2016/10/30/2016-10-30-the-objective-c-style-guide/index.html">
+<meta property="og:site_name" content="ray&#39;s Notes">
+<meta property="og:description" content="经历过几个项目，看过一些代码后。如果还没有代码洁癖，那…我不希望和你一起 Work Or Play。之前找过 Objective-C 代码规范，发现谷歌的 Objective-C 代码规范页面 404 啦，然后看了下 Linux 内核代码。虽然是 c 语言的代码，但那种每行都在 80 个字符之内，能在各种设备上阅读的愉悦感，肯定能使你下定决心写一手干净利索的代码。无规矩，不成方圆。现在终于找到一篇">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-11T11:13:05.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="无规矩 不成方圆">
+<meta name="twitter:description" content="经历过几个项目，看过一些代码后。如果还没有代码洁癖，那…我不希望和你一起 Work Or Play。之前找过 Objective-C 代码规范，发现谷歌的 Objective-C 代码规范页面 404 啦，然后看了下 Linux 内核代码。虽然是 c 语言的代码，但那种每行都在 80 个字符之内，能在各种设备上阅读的愉悦感，肯定能使你下定决心写一手干净利索的代码。无规矩，不成方圆。现在终于找到一篇">
+  <link rel="canonical" href="http://henray.me/2016/10/30/2016-10-30-the-objective-c-style-guide/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>无规矩 不成方圆 | ray's Notes</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ray's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Read The Fucking Source Code !</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://henray.me/2016/10/30/2016-10-30-the-objective-c-style-guide/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ray">
+      <meta itemprop="description" content="Stay Hungry , Stay Foolish !">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ray's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">无规矩 不成方圆
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-10-30 15:54:12" itemprop="dateCreated datePublished" datetime="2016-10-30T15:54:12+00:00">2016-10-30</time>
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/10/30/2016-10-30-the-objective-c-style-guide/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/10/30/2016-10-30-the-objective-c-style-guide/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>经历过几个项目，看过一些代码后。如果还没有代码洁癖，那…我不希望和你一起 Work Or Play。之前找过 Objective-C 代码规范，发现谷歌的 Objective-C 代码规范页面 404 啦，然后看了下 Linux 内核代码。虽然是 c 语言的代码，但那种每行都在 80 个字符之内，能在各种设备上阅读的愉悦感，肯定能使你下定决心写一手干净利索的代码。无规矩，不成方圆。现在终于找到一篇比较全的 <a href="https://github.com/wordpress-mobile/WordPress-iOS" target="_blank" rel="noopener">Wordpress Mobile apps</a> 代码规范,贴上来和大家分享一下。</p>
+<a id="more"></a>
+
+<h2 id="The-Objective-C-Style-Guide-for-Wordpress-Mobile-apps"><a href="#The-Objective-C-Style-Guide-for-Wordpress-Mobile-apps" class="headerlink" title="The Objective-C Style Guide for Wordpress Mobile apps"></a>The Objective-C Style Guide for Wordpress Mobile apps</h2><p>So you want to write some code for WordPress for iOS. That’s nice, thanks a lot. But before that take some minutes to read some tips that will probably make everyone’s life easier. Much of this guide is adapted from <a href="http://google-styleguide.googlecode.com/svn/trunk/objcguide.xml" target="_blank" rel="noopener">Google’s Objective-C Style Guide</a>. You should read that as well as <a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html" target="_blank" rel="noopener">Apple’s Coding Guidelines for Cocoa</a>.</p>
+<h2 id="Before-You-Commit"><a href="#Before-You-Commit" class="headerlink" title="Before You Commit"></a>Before You Commit</h2><ul>
+<li>Review what you commit: make sure you’re not leaving out anything, and that everything that you commit is meant to be there. <code>git add -p</code> is your friend here.</li>
+<li>Check for whitespace. Not the most critical thing, but if you follow the previous step, you might see unnecessary white space added at the end of a line. Get rid of it</li>
+<li>No NSLog in commits. We all use NSLog (or our WP* FileLogger variants) to debug. Unless you really want that to be on production, and logged into the wordpress.log file, remove it before commit. Our app is verbose enough already.</li>
+<li>No commented out code. If the code was already there and you’re removing it to test something, don’t comment it, just remove it. You can always go back by checking out a previous version from source control.</li>
+<li>Avoid new compiler warnings. A compiler warning might seem harmless, but when we compile for the app store, we use <code>-Werror</code>, so those insignificant warnings turn into real errors and force us to investigate what’s wrong at the last minute. You really don’t want to be messing with the code at that point.</li>
+</ul>
+<p>If there’s a ticket associated, make sure to use “refs #123″ or “fixes #123″ in the commit message. It makes easier to track why things changed</p>
+<h2 id="Spacing-and-Formatting"><a href="#Spacing-and-Formatting" class="headerlink" title="Spacing and Formatting"></a>Spacing and Formatting</h2><h3 id="Spaces-vs-Tabs"><a href="#Spaces-vs-Tabs" class="headerlink" title="Spaces vs Tabs"></a>Spaces vs Tabs</h3><p>Use only spaces, and indent 4 spaces at a time.</p>
+<h3 id="Line-Length"><a href="#Line-Length" class="headerlink" title="Line Length"></a>Line Length</h3><p>Each line of text in your code should try to be at most 100 characters long. Objective C is a fairly verbose language and occasionally it makes sense to extend past the 100 character limit. However, this should be a rare occurrence and not commonplace.</p>
+<h3 id="Method-Declarations-and-Definitions"><a href="#Method-Declarations-and-Definitions" class="headerlink" title="Method Declarations and Definitions"></a>Method Declarations and Definitions</h3><p>One space should be used between the - or + and the return type, and no spacing in the parameter list except between parameters.<br>Methods should look like this:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)doSomethingWithString:(NSString *)theString</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>If you have more than one parameter, giving each its own line is preferred. If multiple lines are used, align each using the colon before the parameter.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)doSomethingWith:(GTMFoo *)theFoo</span><br><span class="line">                   rect:(NSRect)theRect</span><br><span class="line">               interval:(float)theInterval</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Method-Invocations"><a href="#Method-Invocations" class="headerlink" title="Method Invocations"></a>Method Invocations</h3><p>Method invocations should be formatted much like method declarations. When there’s a choice of formatting styles, follow the convention already used in a given source file.<br>Invocations should have all arguments on one line:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[myObject doFooWith:arg1 name:arg2 error:arg3];</span><br></pre></td></tr></table></figure>
+
+<p>or have one argument per line, with colons aligned:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[myObject doFooWith:arg1</span><br><span class="line">               name:arg2</span><br><span class="line">              error:arg3];</span><br></pre></td></tr></table></figure>
+
+<p>Don’t use any of these styles:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[myObject doFooWith:arg1 name:arg2  // some lines with &gt;1 arg</span><br><span class="line">              error:arg3];</span><br><span class="line"></span><br><span class="line">[myObject doFooWith:arg1</span><br><span class="line">               name:arg2 error:arg3];</span><br><span class="line"></span><br><span class="line">[myObject doFooWith:arg1</span><br><span class="line">          name:arg2  // aligning keywords instead of colons</span><br><span class="line">          error:arg3];</span><br></pre></td></tr></table></figure>
+
+<h3 id="Protocols"><a href="#Protocols" class="headerlink" title="Protocols"></a>Protocols</h3><p>There should not be a space between the type identifier and the name of the protocol encased in angle brackets.<br>This applies to class declarations, instance variables, and method declarations. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">@interface MyProtocoledClass : NSObject&lt;NSWindowDelegate&gt; &#123;</span><br><span class="line">    id&lt;MyFancyDelegate&gt; _delegate;</span><br><span class="line">&#125;</span><br><span class="line">- (void)setDelegate:(id&lt;MyFancyDelegate&gt;)aDelegate;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h3 id="Blocks"><a href="#Blocks" class="headerlink" title="Blocks"></a>Blocks</h3><p>Blocks are preferred to the target-selector pattern when creating callbacks, as it makes code easier to read. Code inside blocks should be indented four spaces.<br>There are several appropriate style rules, depending on how long the block is:</p>
+<ul>
+<li>If the block can fit on one line, no wrapping is necessary.</li>
+<li>If it has to wrap, the closing brace should line up with the first character of the line on which the block is declared.</li>
+<li>Code within the block should be indented four spaces.</li>
+<li>If the block is large, e.g. more than 20 lines, it is recommended to move it out-of-line into a local variable.</li>
+<li>If the block takes no parameters, there are no spaces between the characters ^{. If the block takes parameters, there is no space between the ^( characters, but there is one space between the ) { characters.</li>
+<li>Two space indents inside blocks are also allowed, but should only be used when it’s consistent with the rest of the project’s code.</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line">// The entire block fits on one line.</span><br><span class="line">[operation setCompletionBlock:^&#123; [self onOperationDone]; &#125;];</span><br><span class="line"></span><br><span class="line">// The block can be put on a new line, indented four spaces, with the</span><br><span class="line">// closing brace aligned with the first character of the line on which</span><br><span class="line">// block was declared.</span><br><span class="line">[operation setCompletionBlock:^&#123;</span><br><span class="line">    [self.delegate newDataAvailable];</span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">// Using a block with a C API follows the same alignment and spacing</span><br><span class="line">// rules as with Objective-C.</span><br><span class="line">dispatch_async(_fileIOQueue, ^&#123;</span><br><span class="line">    NSString* path = [self sessionFilePath];</span><br><span class="line">    if (path) &#123;</span><br><span class="line">        // ...</span><br><span class="line">    &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">// An example where the parameter wraps and the block declaration fits</span><br><span class="line">// on the same line. Note the spacing of |^(SessionWindow *window) &#123;|</span><br><span class="line">// compared to |^&#123;| above.</span><br><span class="line">[[SessionService sharedService]</span><br><span class="line">    loadWindowWithCompletionBlock:^(SessionWindow *window) &#123;</span><br><span class="line">        if (window) &#123;</span><br><span class="line">            [self windowDidLoad:window];</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            [self errorLoadingWindow];</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;];</span><br><span class="line"></span><br><span class="line">// Large blocks can be declared out-of-line.</span><br><span class="line">void (^largeBlock)(void) = ^&#123;</span><br><span class="line">    // ...</span><br><span class="line">&#125;;</span><br><span class="line">[_operationQueue addOperationWithBlock:largeBlock];</span><br></pre></td></tr></table></figure>
+
+<h3 id="Braces"><a href="#Braces" class="headerlink" title="Braces"></a>Braces</h3><p>When writing code that needs braces we generally want the brace on a new line rather than on the same line. The exception to this rule would be for if statements or for statements.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">- (void)someMethod &#123;</span><br><span class="line">    // Do something</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">- (void)someMethod</span><br><span class="line">&#123;</span><br><span class="line">    // Do something</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">if (condition) &#123;</span><br><span class="line">    // Do something</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">for (int i=0; i &lt; len; i++) &#123;</span><br><span class="line">    // Do something</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="If-Statements"><a href="#If-Statements" class="headerlink" title="If Statements"></a>If Statements</h3><p>When writing if statements, make sure to use a curly brace even if it’s a one line statement. Always put the opening curly brace on the same line as an if. The only exception to this rule is when the condition is long enough to need separating between multiple lines. Also make sure there is a space between the <code>if</code> and the opening parenthesis.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">if (someValue != nil) &#123;</span><br><span class="line">    [self doSomething];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">if (someReallyLongVariableName != nil</span><br><span class="line">    &amp;&amp; someOtherLongVariableName != nil)</span><br><span class="line">&#123;</span><br><span class="line">    [self doSomething];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">if (someValue != nil)</span><br><span class="line">    [self doSomething];</span><br></pre></td></tr></table></figure>
+
+<h3 id="Ternary-Operators"><a href="#Ternary-Operators" class="headerlink" title="Ternary Operators"></a>Ternary Operators</h3><p>Be cautious about using the ternary operator as it can make code very difficult to read. Only use a ternary operator if using it makes the code easier to read.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Good</span><br><span class="line">    int minVal = (a &lt; b) ? a : b</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">    [self.view addSubview:((currentlyVisibleView == self.photoSelectorView) ? self.textEditorView : self.photoSelectorView)];</span><br></pre></td></tr></table></figure>
+
+<h3 id="Multi-Line-Declarations"><a href="#Multi-Line-Declarations" class="headerlink" title="Multi Line Declarations"></a>Multi Line Declarations</h3><p>Don’t declare a series of variables on one line but rather split them up into individual lines. The reason for this is that splitting them into multiple lines makes the code easier to read and it makes diffs easier to analyze.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">@property (nonatomic, copy) NSString *username, *url, *password;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">@property (nonatomic, copy) NSString *username;</span><br><span class="line">@property (nonatomic, copy) NSString *url;</span><br><span class="line">@property (nonatomic, copy) NSString *password;</span><br></pre></td></tr></table></figure>
+
+<p>##Naming<br>Naming rules are very important in maintainable code. Objective-C method names tend to be very long, but this has the benefit that a block of code can almost read like prose, thus rendering many comments unnecessary.</p>
+<p>When writing pure Objective-C code, we mostly follow standard <a href="http://developer.apple.com/documentation/Cocoa/Conceptual/CodingGuidelines/CodingGuidelines.html" target="_blank" rel="noopener">Objective-C naming rules</a>.</p>
+<p>Any class, category, method, or variable name may use all capitals for initialisms within the name. This follows Apple’s standard of using all capitals within a name for initialisms such as URL, TIFF, and EXIF. An exception to this is when passing a URL as a <em>NSString</em> we prefer to not to use all capitals. The reason for this is that a non all capitalized URL stands out as more obvious that the variable in question is a <em>NSString</em> instead of a <em>NSURL</em>.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)displayWebsite:(NSURL *)websiteURL</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)displayWebsite:(NSString *)websiteUrl</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="File-Names"><a href="#File-Names" class="headerlink" title="File Names"></a>File Names</h3><p>File names should reflect the name of the class implementation that they contain—including case.  </p>
+<p>File names for categories should include the name of the class being extended, e.g. <em>NSString+Helpers.h</em> or <em>UIColors+Helpers.h</em></p>
+<h3 id="Class-Names"><a href="#Class-Names" class="headerlink" title="Class Names"></a>Class Names</h3><p>Class names (along with category and protocol names) should start as uppercase and use mixed case to delimit words.</p>
+<p>In application-level code, prefixes on class names should generally be avoided. Having every single class with same prefix impairs readability for no benefit. When designing code to be shared across multiple applications, prefixes are acceptable and recommended (e.g. <em>WPXMLRPCEncoder</em>).</p>
+<h3 id="Objective-C-Method-Names"><a href="#Objective-C-Method-Names" class="headerlink" title="Objective-C Method Names"></a>Objective-C Method Names</h3><p>Method names should start as lowercase and then use mixed case. Each named parameter should also start as lowercase.<br>The method name should read like a sentence if possible, meaning you should choose parameter names that flow with the method name. (e.g. <em>convertPoint:fromRect</em>: or <em>replaceCharactersInRange:withString:</em>). See <a href="https://developer.apple.com/library/mac/#documentation/Cocoa/Conceptual/CodingGuidelines/Articles/NamingMethods.html#//apple_ref/doc/uid/20001282-BCIGIJJF" target="_blank" rel="noopener">Apple’s Guide to Naming Methods</a> for more details.  </p>
+<p>Accessor methods should be named the same as the variable they’re “getting”, but they should not be prefixed with the word “get”. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- (id)getDelegate;  // AVOID</span><br><span class="line">- (id)delegate;    // GOOD</span><br></pre></td></tr></table></figure>
+
+<h3 id="Variable-Names"><a href="#Variable-Names" class="headerlink" title="Variable Names"></a>Variable Names</h3><p>Variables names start with a lowercase and use mixed case to delimit words. Instance variables have leading underscores. For example: <em>myLocalVariable</em>, <em>_myInstanceVariable</em>.  </p>
+<p><strong>Common Variable Names</strong></p>
+<p>Do not use Hungarian notation for syntactic attributes, such as the static type of a variable (int or pointer). Give as descriptive a name as possible, within reason. Don’t worry about saving horizontal space as it is far more important to make your code immediately understandable by a new reader. For example:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">int w;</span><br><span class="line">int nerr;</span><br><span class="line">int nCompConns;</span><br><span class="line">tix = [[NSMutableArray alloc] init];</span><br><span class="line">obj = [someObject object];</span><br><span class="line">p = [network port];</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">int numErrors;</span><br><span class="line">int numCompletedConnections;</span><br><span class="line">tickets = [[NSMutableArray alloc] init];</span><br><span class="line">userInfo = [someObject object];</span><br><span class="line">port = [network port];</span><br></pre></td></tr></table></figure>
+
+<p><strong>Instance Variables</strong><br>Instance variables are mixed case and should be prefixed with an underscore e.g. <em>_usernameTextField</em>.</p>
+<h3 id="Comments"><a href="#Comments" class="headerlink" title="Comments"></a>Comments</h3><p>Though a pain to write, they are absolutely vital to keeping our code readable. The following rules describe what you should comment and where. But remember: while comments are very important, the best code is self-documenting. Giving sensible names to types and variables is much better than using obscure names and then trying to explain them through comments.  </p>
+<p>When writing your comments, write for your audience: the next contributor who will need to understand your code. Be generous—the next one may be you!  </p>
+<p><strong>File Comments</strong><br>A file may optionally start with a description of its contents.<br>Every file should contain the following items, in order:</p>
+<ul>
+<li>GPL License</li>
+<li>a basic description of the contents of the file if necessary.</li>
+</ul>
+<p>If you make significant changes to a file with an author line, consider deleting the author line since revision history already provides a more detailed and accurate record of authorship.</p>
+<p><strong>Declaration Comments</strong><br>Every interface, category, and protocol declaration should have an accompanying comment describing its purpose and how it fits into the larger picture.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// A delegate for NSApplication to handle notifications about app</span><br><span class="line">// launch and shutdown. Owned by the main app controller.</span><br><span class="line">@interface MyAppDelegate : NSObject &#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p>If you have already described an interface in detail in the comments at the top of your file feel free to simply state “See comment at top of file for a complete description”, but be sure to have some sort of comment.  </p>
+<p>Additionally, each method in the public interface should have a comment explaining its function, arguments, return value, and any side effects.  </p>
+<p>Document the synchronization assumptions the class makes, if any. If an instance of the class can be accessed by multiple threads, take extra care to document the rules and invariants surrounding multithreaded use.</p>
+<h2 id="Cocoa-and-Objective-C-Features"><a href="#Cocoa-and-Objective-C-Features" class="headerlink" title="Cocoa and Objective-C Features"></a>Cocoa and Objective-C Features</h2><h3 id="Interface-files"><a href="#Interface-files" class="headerlink" title="Interface files"></a>Interface files</h3><p>Interface files should be as short as possible: don’t declare instance variables, and declare only properties and methods that need to be exposed to other classes. Everything else should go into an interface extension inside the implementation file. Remember that you don’t need to declare private methods anymore with a modern Xcode version.</p>
+<h3 id="Overridden-NSObject-Method-Placement"><a href="#Overridden-NSObject-Method-Placement" class="headerlink" title="Overridden NSObject Method Placement"></a>Overridden NSObject Method Placement</h3><p>It is strongly recommended and typical practice to place overridden methods of <em>NSObject</em> at the top of an <em>@implementation</em>. This commonly applies (but is not limited) to the <em>init…</em>, <em>copyWithZone:</em>, and <em>dealloc</em> methods. <em>init</em>… methods should be grouped together, followed by the <em>copyWithZone:</em> method, and finally the <em>dealloc</em> method.</p>
+<h3 id="Initialization"><a href="#Initialization" class="headerlink" title="Initialization"></a>Initialization</h3><p>Don’t initialize variables to <em>0</em> or <em>nil</em> in the init method; it’s redundant.  </p>
+<p>All memory for a newly allocated object is initialized to <em>0</em> (except for isa), so don’t clutter up the init method by re-initializing variables to <em>0</em> or <em>nil</em>.</p>
+<h3 id="Keep-the-Public-API-Simple"><a href="#Keep-the-Public-API-Simple" class="headerlink" title="Keep the Public API Simple"></a>Keep the Public API Simple</h3><p>Keep your class simple; avoid “kitchen-sink” APIs. If a method doesn’t need to be public, don’t make it so.  </p>
+<h3 id="Use-Root-Frameworks"><a href="#Use-Root-Frameworks" class="headerlink" title="Use Root Frameworks"></a>Use Root Frameworks</h3><p>Include root frameworks over individual files.  </p>
+<p>While it may seem tempting to include individual system headers from a framework such as Cocoa or Foundation, in fact it’s less work on the compiler if you include the top-level root framework. The root framework is generally pre-compiled and can be loaded much more quickly. In addition, remember to use #import rather than #include for Objective-C frameworks.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// good</span><br><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line"></span><br><span class="line">// avoid</span><br><span class="line">#import &lt;Foundation/NSArray.h&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<h3 id="Avoid-Accessors-During-init-and-dealloc"><a href="#Avoid-Accessors-During-init-and-dealloc" class="headerlink" title="Avoid Accessors During init and dealloc"></a>Avoid Accessors During init and dealloc</h3><p>Instance subclasses may be in an inconsistent state during <em>init</em> and <em>dealloc</em> method execution, so code in those methods should avoid invoking accessors.  </p>
+<p>Subclasses have not yet been initialized or have already deallocated when <em>init</em> and <em>dealloc</em> methods execute, making accessor methods potentially unreliable. Whenever practical, directly assign to and release ivars in those methods rather than rely on accessors.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line"></span><br><span class="line">- (id)init</span><br><span class="line">&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        _bar = [[NSMutableString alloc] init];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    [_bar release];</span><br><span class="line">    [super dealloc];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Avoid</span><br><span class="line"></span><br><span class="line">- (id)init</span><br><span class="line">&#123;</span><br><span class="line">    self = [super init];</span><br><span class="line">    if (self) &#123;</span><br><span class="line">        self.bar = [NSMutableString string];</span><br><span class="line">    &#125;</span><br><span class="line">    return self;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (void)dealloc</span><br><span class="line">&#123;</span><br><span class="line">    self.bar = nil;</span><br><span class="line">    [super dealloc];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Setters-copy-NSStrings"><a href="#Setters-copy-NSStrings" class="headerlink" title="Setters copy NSStrings"></a>Setters copy NSStrings</h3><p>Setters taking an <em>NSString</em>, should always copy the string it accepts.  </p>
+<p>Never just retain the string. This avoids the caller changing it under you without your knowledge. Don’t assume that because you’re accepting an <em>NSString</em> that it’s not actually an <em>NSMutableString</em>.  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">- (void)setFoo:(NSString *)aFoo</span><br><span class="line">&#123;</span><br><span class="line">    [_foo autorelease];</span><br><span class="line">    _foo = [aFoo copy];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="nil-Checks"><a href="#nil-Checks" class="headerlink" title="nil Checks"></a>nil Checks</h3><p>Use <em>nil</em> checks for logic flow only.  </p>
+<p>Use <em>nil</em> checks for logic flow of the application, not for crash prevention. Sending a message to a nil object is handled by the Objective-C runtime. If the method has no return result, you’re good to go. However if there is one, there may be differences based on runtime architecture, return size, and OS X version (see Apple’s documentation for specifics).</p>
+<h3 id="BOOL-Pitfalls"><a href="#BOOL-Pitfalls" class="headerlink" title="BOOL Pitfalls"></a>BOOL Pitfalls</h3><p>Be careful when converting general integral values to <em>BOOL</em>. Avoid comparing directly with <em>YES</em>.  </p>
+<p><em>BOOL</em> is defined as a signed char in Objective-C which means that it can have values other than <em>YES</em> (1) and <em>NO</em> (0). Do not cast or convert general integral values directly to <em>BOOL</em>. Common mistakes include casting or converting an array’s size, a pointer value, or the result of a bitwise logic operation to a <em>BOOL</em> which, depending on the value of the last byte of the integral result, could still result in a <em>NO</em> value. When converting a general integral value to a <em>BOOL</em> use ternary operators to return a <em>YES</em> or <em>NO</em> value.  </p>
+<p>You can safely interchange and convert <em>BOOL</em>, <em>_Bool</em> and <em>bool</em> (see C++ Std 4.7.4, 4.12 and C99 Std 6.3.1.2). You cannot safely interchange <em>BOOL</em> and <em>Boolean</em> so treat <em>Booleans</em> as a general integral value as discussed above. Only use <em>BOOL</em> in Objective C method signatures.  </p>
+<p>Using logical operators with <em>BOOL</em> is also valid and will return values that can be safely converted to <em>BOOL</em> without the need for a ternary operator.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line"></span><br><span class="line">- (BOOL)isBold</span><br><span class="line">&#123;</span><br><span class="line">    return [self fontTraits] &amp; NSFontBoldTrait;</span><br><span class="line">&#125;</span><br><span class="line">- (BOOL)isValid</span><br><span class="line">&#123;</span><br><span class="line">    return [self stringValue];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Good</span><br><span class="line">- (BOOL)isBold</span><br><span class="line">&#123;</span><br><span class="line">    return ([self fontTraits] &amp; NSFontBoldTrait) ? YES : NO;</span><br><span class="line">&#125;</span><br><span class="line">- (BOOL)isValid</span><br><span class="line">&#123;</span><br><span class="line">    return [self stringValue] != nil;</span><br><span class="line">&#125;</span><br><span class="line">- (BOOL)isEnabled</span><br><span class="line">&#123;</span><br><span class="line">    return [self isValid] &amp;&amp; [self isBold];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Also, don’t directly compare <em>BOOL</em> variables directly with <em>YES</em>. Not only is it harder to read for those well-versed in C, the first point above demonstrates that return values may not always be what you expect.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">// Bad</span><br><span class="line">BOOL great = [foo isGreat];</span><br><span class="line">if (great == YES)</span><br><span class="line">    // ...be great!</span><br><span class="line"></span><br><span class="line">//Good</span><br><span class="line">BOOL great = [foo isGreat];</span><br><span class="line">if (great)</span><br><span class="line">    // ...be great!</span><br></pre></td></tr></table></figure>
+
+<h3 id="Properties"><a href="#Properties" class="headerlink" title="Properties"></a>Properties</h3><p>Use of the <em>@property</em> directive is preferred. Dot notation is allowed only for access to a declared @property.</p>
+<p>Use of automatically synthesized instance variables is preferred.</p>
+<p><strong>Location</strong>  </p>
+<p>A property’s declaration must come immediately after the instance variable block of a class interface. A property’s definition (if not using automatic synthesis) must come immediately after the <em>@implementation</em> block in a class definition. They are indented at the same level as the <em>@interface</em> or <em>@implementation</em> statements that they are enclosed in.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">@interface MyClass : NSObject</span><br><span class="line">@property(copy, nonatomic) NSString *name;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">@implementation MyClass</span><br><span class="line"></span><br><span class="line">- (id)init</span><br><span class="line">&#123;</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<p><strong>Use Copy Attribute For Strings</strong><br>NSString properties should always be declared with the <em>copy</em> attribute.  </p>
+<p>This logically follows from the requirement that setters for NSStrings always must use <em>copy</em> instead of <em>retain</em>.  </p>
+<p><strong>Dot notation</strong><br>Dot notation is idiomatic style for Objective-C 2.0. It may be used when doing simple operations to get and set a <em>@property</em> of an object, but should not be used to invoke other object behavior.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">NSString *oldName = myObject.name;</span><br><span class="line">myObject.name = @&quot;Alice&quot;;</span><br><span class="line">NSArray *array = [[NSArray arrayWithObject:@&quot;hello&quot;] retain];</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">NSUInteger numberOfItems = array.count;  // not a property</span><br><span class="line">array.release;                           // not a property</span><br></pre></td></tr></table></figure>
+
+<h3 id="Interfaces-Without-Instance-Variables"><a href="#Interfaces-Without-Instance-Variables" class="headerlink" title="Interfaces Without Instance Variables"></a>Interfaces Without Instance Variables</h3><p>Omit the empty set of braces on interfaces that do not declare any instance variables.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">@interface MyClass : NSObject</span><br><span class="line">// Does a lot of stuff</span><br><span class="line">- (void)fooBarBam;</span><br><span class="line">@end</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">@interface MyClass : NSObject &#123;</span><br><span class="line">&#125;</span><br><span class="line">// Does a lot of stuff</span><br><span class="line">- (void)fooBarBam;</span><br><span class="line">@end</span><br></pre></td></tr></table></figure>
+
+<h3 id="NSNumber-NSArray-and-NSDictionary-Literals"><a href="#NSNumber-NSArray-and-NSDictionary-Literals" class="headerlink" title="NSNumber, NSArray and NSDictionary  Literals"></a>NSNumber, NSArray and NSDictionary  Literals</h3><p>For projects that use Xcode 4.4 or later with clang, the use of NSNumber, NSArray and NSDictionary <a href="http://clang.llvm.org/docs/ObjectiveCLiterals.html" target="_blank" rel="noopener">literals</a> is allowed and preferred.</p>
+<p>NSNumber literals are used just like Objective C string literals. Boxing is used when necessary.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// NSNumber</span><br><span class="line">NSNumber *fortyTwo = @42;</span><br><span class="line">NSNumber *piOverTwo = @(M_PI / 2);</span><br><span class="line">typedef NS_ENUM(NSUInteger, MyEnum) &#123;</span><br><span class="line">    MyEnumOne,</span><br><span class="line">    MyEnumTwo = 2,</span><br><span class="line">&#125;;</span><br><span class="line">NSNumber *myEnum = @(MyEnumTwo);</span><br><span class="line"></span><br><span class="line">// NSArray</span><br><span class="line">NSArray *continents = @[@&quot;North America&quot;, @&quot;South America&quot;, @&quot;Europe&quot;, @&quot;Asia&quot;, @&quot;Africa&quot;, @&quot;Antarctica&quot;, @&quot;Australia&quot;];</span><br><span class="line"></span><br><span class="line">// NSDictionary</span><br><span class="line">NSDictionary *personInfo = @&#123; @&quot;name&quot; : @&quot;John Doe&quot;, @&quot;age&quot; : @(25) &#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Constant-definitions"><a href="#Constant-definitions" class="headerlink" title="Constant definitions"></a>Constant definitions</h3><p>Avoid using <code>#define</code> for constants, they should be defined using <code>const</code>. Constant names should start with an uppercase letter and use mixed case.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// Good</span><br><span class="line">NSInteger const ReaderPostsToSync = 20;</span><br><span class="line">NSString *const ReaderLastSyncDateKey = @&quot;ReaderLastSyncDate&quot;;</span><br><span class="line"></span><br><span class="line">// Bad</span><br><span class="line">#define READER_POSTS_TO_SYNC 20;</span><br><span class="line">#define READER_SYNC_DATE_KEY @&quot;ReaderLastSyncDate&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>Constants should be defined in the implementation file. If a class needs to expose a constant, it should be defined as <code>extern</code> on the interface file, then initialised in the implementation file:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">//  Blog+Jetpack.h</span><br><span class="line">extern NSString * const BlogJetpackErrorDomain;</span><br><span class="line"></span><br><span class="line">//  Blog+Jetpack.m</span><br><span class="line">NSString * const BlogJetpackErrorDomain = @&quot;BlogJetpackError&quot;;</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2016/08/01/2016-08-01-论代码命名的重要性/" rel="next" title="论代码命名的重要性">
+                  <i class="fa fa-chevron-left"></i> 论代码命名的重要性
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/11/15/2016-11-15-wechat-app-architecture-description/" rel="prev" title="WeChat Architecture">
+                  WeChat Architecture <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#The-Objective-C-Style-Guide-for-Wordpress-Mobile-apps"><span class="nav-number">1.</span> <span class="nav-text">The Objective-C Style Guide for Wordpress Mobile apps</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Before-You-Commit"><span class="nav-number">2.</span> <span class="nav-text">Before You Commit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spacing-and-Formatting"><span class="nav-number">3.</span> <span class="nav-text">Spacing and Formatting</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spaces-vs-Tabs"><span class="nav-number">3.1.</span> <span class="nav-text">Spaces vs Tabs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Line-Length"><span class="nav-number">3.2.</span> <span class="nav-text">Line Length</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Declarations-and-Definitions"><span class="nav-number">3.3.</span> <span class="nav-text">Method Declarations and Definitions</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Method-Invocations"><span class="nav-number">3.4.</span> <span class="nav-text">Method Invocations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Protocols"><span class="nav-number">3.5.</span> <span class="nav-text">Protocols</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Blocks"><span class="nav-number">3.6.</span> <span class="nav-text">Blocks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Braces"><span class="nav-number">3.7.</span> <span class="nav-text">Braces</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#If-Statements"><span class="nav-number">3.8.</span> <span class="nav-text">If Statements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Ternary-Operators"><span class="nav-number">3.9.</span> <span class="nav-text">Ternary Operators</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Multi-Line-Declarations"><span class="nav-number">3.10.</span> <span class="nav-text">Multi Line Declarations</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#File-Names"><span class="nav-number">3.11.</span> <span class="nav-text">File Names</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Class-Names"><span class="nav-number">3.12.</span> <span class="nav-text">Class Names</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Objective-C-Method-Names"><span class="nav-number">3.13.</span> <span class="nav-text">Objective-C Method Names</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Variable-Names"><span class="nav-number">3.14.</span> <span class="nav-text">Variable Names</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Comments"><span class="nav-number">3.15.</span> <span class="nav-text">Comments</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cocoa-and-Objective-C-Features"><span class="nav-number">4.</span> <span class="nav-text">Cocoa and Objective-C Features</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Interface-files"><span class="nav-number">4.1.</span> <span class="nav-text">Interface files</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overridden-NSObject-Method-Placement"><span class="nav-number">4.2.</span> <span class="nav-text">Overridden NSObject Method Placement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Initialization"><span class="nav-number">4.3.</span> <span class="nav-text">Initialization</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Keep-the-Public-API-Simple"><span class="nav-number">4.4.</span> <span class="nav-text">Keep the Public API Simple</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Use-Root-Frameworks"><span class="nav-number">4.5.</span> <span class="nav-text">Use Root Frameworks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Avoid-Accessors-During-init-and-dealloc"><span class="nav-number">4.6.</span> <span class="nav-text">Avoid Accessors During init and dealloc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Setters-copy-NSStrings"><span class="nav-number">4.7.</span> <span class="nav-text">Setters copy NSStrings</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nil-Checks"><span class="nav-number">4.8.</span> <span class="nav-text">nil Checks</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#BOOL-Pitfalls"><span class="nav-number">4.9.</span> <span class="nav-text">BOOL Pitfalls</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Properties"><span class="nav-number">4.10.</span> <span class="nav-text">Properties</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Interfaces-Without-Instance-Variables"><span class="nav-number">4.11.</span> <span class="nav-text">Interfaces Without Instance Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSNumber-NSArray-and-NSDictionary-Literals"><span class="nav-number">4.12.</span> <span class="nav-text">NSNumber, NSArray and NSDictionary  Literals</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Constant-definitions"><span class="nav-number">4.13.</span> <span class="nav-text">Constant definitions</span></a></li></ol></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.gif"
+      alt="ray">
+  <p class="site-author-name" itemprop="name">ray</p>
+  <div class="site-description" itemprop="description">Stay Hungry , Stay Foolish !</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/henrayluo" title="GitHub &rarr; https://github.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:HenrayLuo@gmail.com" title="E-Mail &rarr; mailto:HenrayLuo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://weibo.com/2784263224/profile?is_all=1" title="Weibo &rarr; http://weibo.com/2784263224/profile?is_all=1" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/henrayluo" title="Twitter &rarr; https://twitter.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.instagram.com/henrayluo" title="Instagram &rarr; https://www.instagram.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://music.163.com/#/user/home?id=6244670" title="NetEaseM &rarr; http://music.163.com/#/user/home?id=6244670" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>NetEaseM</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ray</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://henrayluo.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://henray.me/2016/10/30/2016-10-30-the-objective-c-style-guide/";
+    this.page.identifier = "2016/10/30/2016-10-30-the-objective-c-style-guide/";
+    this.page.title = '无规矩 不成方圆';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://henrayluo.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>

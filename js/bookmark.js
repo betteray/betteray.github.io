@@ -1,6 +1,6 @@
 /* global CONFIG */
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   'use strict';
 
   var doSaveScroll = () => {
@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!isNaN(top) && location.hash === '') {
       // Auto scroll to the position
       window.anime({
-        targets  : document.scrollingElement,
+        targets  : document.documentElement,
         duration : 200,
         easing   : 'linear',
         scrollTop: top
@@ -26,7 +26,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create a link element
     var link = document.querySelector('.book-mark-link');
     // Scroll event
-    window.addEventListener('scroll', () => link.classList.toggle('book-mark-link-fixed', window.scrollY === 0));
+    window.addEventListener('scroll', () => {
+      window.scrollY === 0 ? link.classList.add('book-mark-link-fixed') : link.classList.remove('book-mark-link-fixed');
+    });
     // Register beforeunload event when the trigger is auto
     if (trigger === 'auto') {
       // Register beforeunload event
@@ -34,7 +36,8 @@ document.addEventListener('DOMContentLoaded', () => {
       window.addEventListener('pjax:send', doSaveScroll);
     }
     // Save the position by clicking the icon
-    link.addEventListener('click', () => {
+    link.addEventListener('click', event => {
+      event.preventDefault();
       doSaveScroll();
       window.anime({
         targets : link,
