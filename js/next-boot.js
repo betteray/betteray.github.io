@@ -8,20 +8,20 @@ NexT.boot.registerEvents = function() {
   NexT.utils.registerCanIUseTag();
 
   // Mobile top menu bar.
-  document.querySelector('.site-nav-toggle .toggle').addEventListener('click', () => {
-    event.currentTarget.classList.toggle('toggle-close');
+  document.querySelector('.site-nav-toggle button').addEventListener('click', () => {
     var siteNav = document.querySelector('.site-nav');
-    var animateAction = siteNav.classList.contains('site-nav-on') ? 'slideUp' : 'slideDown';
+    var ON_CLASS_NAME = 'site-nav-on';
+    var animateAction = siteNav.classList.contains(ON_CLASS_NAME) ? 'slideUp' : 'slideDown';
 
     if (typeof Velocity === 'function') {
       Velocity(siteNav, animateAction, {
         duration: 200,
         complete: function() {
-          siteNav.classList.toggle('site-nav-on');
+          siteNav.classList.toggle(ON_CLASS_NAME);
         }
       });
     } else {
-      siteNav.classList.toggle('site-nav-on');
+      siteNav.classList.toggle(ON_CLASS_NAME);
     }
   });
 
@@ -80,7 +80,7 @@ NexT.boot.refresh = function() {
    * Need to add config option in Front-End at 'layout/_partials/head.swig' file.
    */
   CONFIG.fancybox && NexT.utils.wrapImageWithFancyBox();
-  CONFIG.mediumzoom && window.mediumZoom('.post-body :not(a) > img, .post-body > img');
+  CONFIG.mediumzoom && window.mediumZoom('.post-body :not(a) > img');
   CONFIG.lazyload && window.lozad('.post-body img').observe();
   CONFIG.pangu && window.pangu.spacingPage();
 
@@ -88,7 +88,6 @@ NexT.boot.refresh = function() {
   CONFIG.copycode.enable && NexT.utils.registerCopyCode();
   NexT.utils.registerTabsTag();
   NexT.utils.registerActiveMenuItem();
-  NexT.utils.registerLangSelect();
   NexT.utils.registerSidebarTOC();
   NexT.utils.wrapTableWithBox();
   NexT.utils.registerVideoIframe();
@@ -103,11 +102,12 @@ NexT.boot.motion = function() {
       .add(NexT.motion.middleWares.postList)
       .add(NexT.motion.middleWares.sidebar)
       .bootstrap();
+  } else {
+    NexT.utils.updateSidebarPosition();
   }
-  NexT.utils.updateSidebarPosition();
 };
 
-document.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   NexT.boot.registerEvents();
   NexT.boot.refresh();
   NexT.boot.motion();
