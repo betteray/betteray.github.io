@@ -1,90 +1,52 @@
 <!DOCTYPE html>
-
-
-
-
-
-<html lang="zh-Hans">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
-  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
 
-<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+<link rel="stylesheet" href="/css/main.css">
 
 
-<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
-
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
 
 <script id="hexo-configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Pisces',
-    version: '7.4.0',
-    exturl: false,
-    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
-    copycode: {"enable":false,"show_result":false,"style":null},
-    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
-    bookmark: {"enable":false,"color":"#222","save":"auto"},
-    fancybox: false,
-    mediumzoom: false,
-    lazyload: false,
-    pangu: false,
-    algolia: {
-      appID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    },
-    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
-    path: '',
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    translation: {
-      copy_button: 'Copy',
-      copy_success: 'Copied',
-      copy_failure: 'Copy failed'
-    },
-    sidebarPadding: 40
-  };
-</script>
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"betteray.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-  <meta name="description" content="//  WeAppArchitectureDescription.ReadMe//  MicroMessenger////  Created by tedwu on 2016-7-15.//  Copyright 2016 Tencent. All rights reserved.">
+  <meta name="description" content="&#x2F;&#x2F;  WeAppArchitectureDescription.ReadMe&#x2F;&#x2F;  MicroMessenger&#x2F;&#x2F;&#x2F;&#x2F;  Created by tedwu on 2016-7-15.&#x2F;&#x2F;  Copyright 2016 Tencent. All rights reserved.">
 <meta property="og:type" content="article">
 <meta property="og:title" content="WeChat Architecture">
-<meta property="og:url" content="http://henray.me/2016/11/15/2016-11-15-wechat-app-architecture-description/index.html">
+<meta property="og:url" content="https://betteray.github.io/2016/11/15/2016-11-15-wechat-app-architecture-description/index.html">
 <meta property="og:site_name" content="ray&#39;s Notes">
-<meta property="og:description" content="//  WeAppArchitectureDescription.ReadMe//  MicroMessenger////  Created by tedwu on 2016-7-15.//  Copyright 2016 Tencent. All rights reserved.">
-<meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2021-11-11T11:41:52.768Z">
+<meta property="og:description" content="&#x2F;&#x2F;  WeAppArchitectureDescription.ReadMe&#x2F;&#x2F;  MicroMessenger&#x2F;&#x2F;&#x2F;&#x2F;  Created by tedwu on 2016-7-15.&#x2F;&#x2F;  Copyright 2016 Tencent. All rights reserved.">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2016-11-15T03:34:29.000Z">
+<meta property="article:modified_time" content="2021-11-11T11:56:01.543Z">
+<meta property="article:author" content="ray">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="WeChat Architecture">
-<meta name="twitter:description" content="//  WeAppArchitectureDescription.ReadMe//  MicroMessenger////  Created by tedwu on 2016-7-15.//  Copyright 2016 Tencent. All rights reserved.">
-  <link rel="canonical" href="http://henray.me/2016/11/15/2016-11-15-wechat-app-architecture-description/">
+
+<link rel="canonical" href="https://betteray.github.io/2016/11/15/2016-11-15-wechat-app-architecture-description/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome: false,
-    isPost: true,
-    isPage: false,
-    isArchive: false
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
   };
 </script>
 
   <title>WeChat Architecture | ray's Notes</title>
-  <meta name="generator" content="Hexo 3.9.0">
   
-
-
 
 
 
@@ -103,7 +65,6 @@
   .use-motion .post-body,
   .use-motion .collection-header { opacity: initial; }
 
-  .use-motion .logo,
   .use-motion .site-title,
   .use-motion .site-subtitle {
     opacity: initial;
@@ -117,85 +78,62 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
-  <div class="site-meta">
-
-    <div>
-      <a href="/" class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">ray's Notes</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-        <p class="site-subtitle">Read The Fucking Source Code !</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button aria-label="Toggle navigation bar">
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">ray's Notes</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Read The Fucking Source Code.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
 
+
+
 <nav class="site-nav">
-  
   <ul id="menu" class="menu">
-      
-      
-      
-        
         <li class="menu-item menu-item-home">
-      
-    
 
-    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-archives">
-      
-    
 
-    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
 
   </li>
-      
-      
-      
-        
         <li class="menu-item menu-item-categories">
-      
-    
 
-    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
-
-  </li>
-      
-      
-      
-        
-        <li class="menu-item menu-item-about">
-      
-    
-
-    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
 
   </li>
   </ul>
-
 </nav>
+
+
+
+
 </div>
     </header>
 
@@ -206,35 +144,32 @@
   </div>
 
 
-    <main id="main" class="main">
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
             
 
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-      <article itemscope itemtype="http://schema.org/Article">
+    
   
   
-  
-  <div class="post-block post">
-    <link itemprop="mainEntityOfPage" href="http://henray.me/2016/11/15/2016-11-15-wechat-app-architecture-description/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://betteray.github.io/2016/11/15/2016-11-15-wechat-app-architecture-description/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="ray">
-      <meta itemprop="description" content="Stay Hungry , Stay Foolish !">
       <meta itemprop="image" content="/uploads/avatar.gif">
+      <meta itemprop="name" content="ray">
+      <meta itemprop="description" content="Stay Hungry , Stay Foolish.">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="ray's Notes">
     </span>
       <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">WeChat Architecture
-
-          
+        <h1 class="post-title" itemprop="name headline">
+          WeChat Architecture
         </h1>
 
         <div class="post-meta">
@@ -244,29 +179,17 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              
-                
-              
-
-              <time title="Created: 2016-11-15 11:34:29" itemprop="dateCreated datePublished" datetime="2016-11-15T11:34:29+00:00">2016-11-15</time>
+              <time title="Created: 2016-11-15 03:34:29" itemprop="dateCreated datePublished" datetime="2016-11-15T03:34:29+00:00">2016-11-15</time>
             </span>
-          
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2021-11-11 11:56:01" itemprop="dateModified" datetime="2021-11-11T11:56:01+00:00">2021-11-11</time>
+              </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="fa fa-comment-o"></i>
-      </span>
-        
-      
-      <span class="post-meta-item-text">Disqus: </span>
-    
-    <a title="disqus" href="/2016/11/15/2016-11-15-wechat-app-architecture-description/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/11/15/2016-11-15-wechat-app-architecture-description/" itemprop="commentCount"></span></a>
-  </span>
-  
-  
 
         </div>
       </header>
@@ -278,9 +201,9 @@
 
       
         <p>//  WeAppArchitectureDescription.ReadMe<br>//  MicroMessenger<br>//<br>//  Created by tedwu on 2016-7-15.<br>//  Copyright 2016 Tencent. All rights reserved.</p>
-<a id="more"></a>
+<span id="more"></span>
 
-<figure class="highlight gherkin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  WeAppArchitectureDescription.ReadMe</span><br><span class="line">//  MicroMessenger</span><br><span class="line">//</span><br><span class="line">//  Created by tedwu on 2016-7-15.</span><br><span class="line">//  Copyright 2016 Tencent. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">Architecture:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______      _______________</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">      UI    |<span class="string">                 Message    +    Entrance                  </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">_____ _____ _____ _____ _____ _____ _____ _____ _____ _____</span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">                                                                             |<span class="string">               </span>|</span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______     |<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">   ConfigMgr   </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">    Facade  |<span class="string">                          AppMgr                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">_____ _____ _____ _____ _____ _____ _____ _____ _____ _____</span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">                                                                             |<span class="string">               </span>|</span><br><span class="line">            _____ _____ _____ _____   ___ _____ _____ _____ _____ ______     |<span class="string">  PermissonMgr </span>|</span><br><span class="line">            |<span class="string">                      </span>|<span class="string"> </span>|<span class="string">                                  </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                      </span>|<span class="string"> </span>|<span class="string">                                  </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">      Mgr   |<span class="string">      AppTaskMg       </span>|<span class="string"> </span>|<span class="string"> AppVersionMgr  +  AppListInfoMgr </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                      </span>|<span class="string"> </span>|<span class="string">                                  </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">_____ _____ _____ ____</span>|<span class="string"> </span>|<span class="string">___ _____ _____ _____ _____ ______</span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">                                                                             |<span class="string">   DataBase    </span>|</span><br><span class="line">            _____ _____ _____ _____ _____ ______   ___ _____ _____ _____     |<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                   </span>|<span class="string"> </span>|<span class="string">                     </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                   </span>|<span class="string"> </span>|<span class="string">                     </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string"> WebView + MultiTask + AppService  </span>|<span class="string"> </span>|<span class="string">         SDK         </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                   </span>|<span class="string"> </span>|<span class="string">                     </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">_____ _____ _____ _____ _____ _____</span>|<span class="string"> </span>|<span class="string">_____ _____ _____ ___</span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">     core                                                                    |<span class="string">               </span>|</span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______     |<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">              PageFrame    +    LocalCache                 </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">                                                           </span>|<span class="string">    </span>|<span class="string">               </span>|</span><br><span class="line">            |<span class="string">_____ _____ _____ _____ _____ _____ _____ _____ _____ _____</span>|<span class="string">    </span>|<span class="string">_______________</span>|</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Directory Structure:</span><br><span class="line"></span><br><span class="line">|<span class="string">_____AppMgr</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppListInfoMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppListInfoMgr.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppMgr.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppTaskMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppTaskMgr.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppVersionMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAAppVersionMgr.mm</span></span><br><span class="line">|_____Base</span><br><span class="line">|<span class="string">_____</span>|_____ConfigMgr</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAConfigMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAConfigMgr.mm</span></span><br><span class="line">|<span class="string">_____</span>|_____DataBase</span><br><span class="line">|<span class="string">_____</span>|_____PermissonMgr</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAPermissonMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAPermissonMgr.mm</span></span><br><span class="line">|_____Core</span><br><span class="line">|<span class="string">_____</span>|_____AppService</span><br><span class="line">|<span class="string">_____</span>|_____LocalCache</span><br><span class="line">|<span class="string">_____</span>|_____MultiTask</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAMultiTaskMgr.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAMultiTaskMgr.mm</span></span><br><span class="line">|<span class="string">_____</span>|_____PageFrame</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+Preload.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+Preload.mm</span></span><br><span class="line">|<span class="string">_____</span>|_____Webview</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|_____Plugin</span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_CustomNavigationBar.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_CustomNavigationBar.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_CustomTabBar.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_CustomTabBar.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_InputKeyboard.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_InputKeyboard.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_PullRefresh.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPlugin_PullRefresh.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPluginBase.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPluginBase.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPluginScheduler.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewPluginScheduler.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+AppBrand.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+AppBrand.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+UI.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController+UI.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewController.mm</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewJSLogicImpl.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____</span>|<span class="string">_____WAWebViewJSLogicImpl.mm</span></span><br><span class="line">|_____Portal</span><br><span class="line">|<span class="string">_____SDK</span></span><br><span class="line">|<span class="string">_____</span>|_____AppServiceAPI</span><br><span class="line">|<span class="string">_____</span>|_____Dependency</span><br><span class="line">|<span class="string">_____</span>|_____WebViewAPI</span><br><span class="line">|<span class="string">_____Util</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAUtility.h</span></span><br><span class="line">|<span class="string">_____</span>|<span class="string">_____WAUtility.mm</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">//</span><br><span class="line">//  WeAppArchitectureDescription.ReadMe</span><br><span class="line">//  MicroMessenger</span><br><span class="line">//</span><br><span class="line">//  Created by tedwu on 2016-7-15.</span><br><span class="line">//  Copyright 2016 Tencent. All rights reserved.</span><br><span class="line">//</span><br><span class="line"></span><br><span class="line">Architecture:</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______      _______________</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">      UI    |                 Message    +    Entrance                  |    |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |_____ _____ _____ _____ _____ _____ _____ _____ _____ _____|    |               |</span><br><span class="line">                                                                             |               |</span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______     |               |</span><br><span class="line">            |                                                           |    |   ConfigMgr   |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">    Facade  |                          AppMgr                           |    |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |_____ _____ _____ _____ _____ _____ _____ _____ _____ _____|    |               |</span><br><span class="line">                                                                             |               |</span><br><span class="line">            _____ _____ _____ _____   ___ _____ _____ _____ _____ ______     |  PermissonMgr |</span><br><span class="line">            |                      | |                                  |    |               |</span><br><span class="line">            |                      | |                                  |    |               |</span><br><span class="line">      Mgr   |      AppTaskMg       | | AppVersionMgr  +  AppListInfoMgr |    |               |</span><br><span class="line">            |                      | |                                  |    |               |</span><br><span class="line">            |_____ _____ _____ ____| |___ _____ _____ _____ _____ ______|    |               |</span><br><span class="line">                                                                             |   DataBase    |</span><br><span class="line">            _____ _____ _____ _____ _____ ______   ___ _____ _____ _____     |               |</span><br><span class="line">            |                                   | |                     |    |               |</span><br><span class="line">            |                                   | |                     |    |               |</span><br><span class="line">            | WebView + MultiTask + AppService  | |         SDK         |    |               |</span><br><span class="line">            |                                   | |                     |    |               |</span><br><span class="line">            |_____ _____ _____ _____ _____ _____| |_____ _____ _____ ___|    |               |</span><br><span class="line">     core                                                                    |               |</span><br><span class="line">            _____ _____ _____ _____ _____ _____ _____ _____ _____ ______     |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |              PageFrame    +    LocalCache                 |    |               |</span><br><span class="line">            |                                                           |    |               |</span><br><span class="line">            |_____ _____ _____ _____ _____ _____ _____ _____ _____ _____|    |_______________|</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Directory Structure:</span><br><span class="line"></span><br><span class="line">|_____AppMgr</span><br><span class="line">|_____|_____WAAppListInfoMgr.h</span><br><span class="line">|_____|_____WAAppListInfoMgr.mm</span><br><span class="line">|_____|_____WAAppMgr.h</span><br><span class="line">|_____|_____WAAppMgr.mm</span><br><span class="line">|_____|_____WAAppTaskMgr.h</span><br><span class="line">|_____|_____WAAppTaskMgr.mm</span><br><span class="line">|_____|_____WAAppVersionMgr.h</span><br><span class="line">|_____|_____WAAppVersionMgr.mm</span><br><span class="line">|_____Base</span><br><span class="line">|_____|_____ConfigMgr</span><br><span class="line">|_____|_____|_____WAConfigMgr.h</span><br><span class="line">|_____|_____|_____WAConfigMgr.mm</span><br><span class="line">|_____|_____DataBase</span><br><span class="line">|_____|_____PermissonMgr</span><br><span class="line">|_____|_____|_____WAPermissonMgr.h</span><br><span class="line">|_____|_____|_____WAPermissonMgr.mm</span><br><span class="line">|_____Core</span><br><span class="line">|_____|_____AppService</span><br><span class="line">|_____|_____LocalCache</span><br><span class="line">|_____|_____MultiTask</span><br><span class="line">|_____|_____|_____WAMultiTaskMgr.h</span><br><span class="line">|_____|_____|_____WAMultiTaskMgr.mm</span><br><span class="line">|_____|_____PageFrame</span><br><span class="line">|_____|_____|_____WAWebViewController+Preload.h</span><br><span class="line">|_____|_____|_____WAWebViewController+Preload.mm</span><br><span class="line">|_____|_____Webview</span><br><span class="line">|_____|_____|_____Plugin</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_CustomNavigationBar.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_CustomNavigationBar.mm</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_CustomTabBar.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_CustomTabBar.mm</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_InputKeyboard.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_InputKeyboard.mm</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_PullRefresh.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPlugin_PullRefresh.mm</span><br><span class="line">|_____|_____|_____|_____WAWebViewPluginBase.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPluginBase.mm</span><br><span class="line">|_____|_____|_____|_____WAWebViewPluginScheduler.h</span><br><span class="line">|_____|_____|_____|_____WAWebViewPluginScheduler.mm</span><br><span class="line">|_____|_____|_____WAWebViewController+AppBrand.h</span><br><span class="line">|_____|_____|_____WAWebViewController+AppBrand.mm</span><br><span class="line">|_____|_____|_____WAWebViewController+UI.h</span><br><span class="line">|_____|_____|_____WAWebViewController+UI.mm</span><br><span class="line">|_____|_____|_____WAWebViewController.h</span><br><span class="line">|_____|_____|_____WAWebViewController.mm</span><br><span class="line">|_____|_____|_____WAWebViewJSLogicImpl.h</span><br><span class="line">|_____|_____|_____WAWebViewJSLogicImpl.mm</span><br><span class="line">|_____Portal</span><br><span class="line">|_____SDK</span><br><span class="line">|_____|_____AppServiceAPI</span><br><span class="line">|_____|_____Dependency</span><br><span class="line">|_____|_____WebViewAPI</span><br><span class="line">|_____Util</span><br><span class="line">|_____|_____WAUtility.h</span><br><span class="line">|_____|_____WAUtility.mm</span><br></pre></td></tr></table></figure>
 
 
     </div>
@@ -288,74 +211,68 @@
     
     
     
-        
-      
 
       <footer class="post-footer">
 
         
 
-          <div class="post-nav">
-            <div class="post-nav-next post-nav-item">
-              
-                <a href="/2016/10/30/2016-10-30-the-objective-c-style-guide/" rel="next" title="无规矩 不成方圆">
-                  <i class="fa fa-chevron-left"></i> 无规矩 不成方圆
-                </a>
-              
-            </div>
 
-            <span class="post-nav-divider"></span>
-
-            <div class="post-nav-prev post-nav-item">
-              
-                <a href="/2017/06/14/2017-06-14-API-Replay-Attacks/" rel="prev" title="如何有效防止API的重放攻击？">
-                  如何有效防止API的重放攻击？ <i class="fa fa-chevron-right"></i>
-                </a>
-              
-            </div>
-          </div>
         
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/10/30/2016-10-30-the-objective-c-style-guide/" rel="prev" title="无规矩 不成方圆">
+      <i class="fa fa-chevron-left"></i> 无规矩 不成方圆
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2017/06/14/2017-06-14-API-Replay-Attacks/" rel="next" title="如何有效防止API的重放攻击？">
+      如何有效防止API的重放攻击？ <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
-  </div>
-  
-  
-  
   </article>
+  
+  
+  
 
-  </div>
 
 
           </div>
           
-    
-    
-  <div class="comments" id="comments">
-    <div id="disqus_thread">
-      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
-    </div>
-  </div>
-  
-  
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
 
         </div>
           
   
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
   </div>
 
   <aside class="sidebar">
     <div class="sidebar-inner">
-        
-        
-        
-        
-      
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
@@ -373,116 +290,52 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image"
-      src="/uploads/avatar.gif"
-      alt="ray">
+    <img class="site-author-image" itemprop="image" alt="ray"
+      src="/uploads/avatar.gif">
   <p class="site-author-name" itemprop="name">ray</p>
-  <div class="site-description" itemprop="description">Stay Hungry , Stay Foolish !</div>
+  <div class="site-description" itemprop="description">Stay Hungry , Stay Foolish.</div>
 </div>
-  <nav class="site-state motion-element">
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
       <div class="site-state-item site-state-posts">
-        
           <a href="/archives/">
         
           <span class="site-state-item-count">19</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-categories">
-        
-          
             <a href="/categories/">
           
-        
         <span class="site-state-item-count">4</span>
-        <span class="site-state-item-name">categories</span>
-        </a>
+        <span class="site-state-item-name">categories</span></a>
       </div>
-    
-      
-      
       <div class="site-state-item site-state-tags">
-        
-          
             <a href="/tags/">
-          
-        
         <span class="site-state-item-count">11</span>
-        <span class="site-state-item-name">tags</span>
-        </a>
+        <span class="site-state-item-name">tags</span></a>
       </div>
-    
   </nav>
+</div>
   <div class="links-of-author motion-element">
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://github.com/henrayluo" title="GitHub &rarr; https://github.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+        <a href="https://github.com/betteray" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;betteray" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="mailto:HenrayLuo@gmail.com" title="E-Mail &rarr; mailto:HenrayLuo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+        <a href="mailto:HenrayLuo@gmail.com" title="E-Mail → mailto:HenrayLuo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="http://weibo.com/2784263224/profile?is_all=1" title="Weibo &rarr; http://weibo.com/2784263224/profile?is_all=1" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+        <a href="http://weibo.com/2784263224/profile?is_all=1" title="Weibo → http:&#x2F;&#x2F;weibo.com&#x2F;2784263224&#x2F;profile?is_all&#x3D;1" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://twitter.com/henrayluo" title="Twitter &rarr; https://twitter.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+        <a href="https://www.instagram.com/henrayluo" title="Instagram → https:&#x2F;&#x2F;www.instagram.com&#x2F;henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="https://www.instagram.com/henrayluo" title="Instagram &rarr; https://www.instagram.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+        <a href="https://twitter.com/henrayluo" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
       </span>
-    
       <span class="links-of-author-item">
-      
-      
-        
-      
-      
-        
-      
-        <a href="http://music.163.com/#/user/home?id=6244670" title="NetEaseM &rarr; http://music.163.com/#/user/home?id=6244670" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>NetEaseM</a>
+        <a href="http://music.163.com/#/user/home?id=6244670" title="NetEaseM → http:&#x2F;&#x2F;music.163.com&#x2F;#&#x2F;user&#x2F;home?id&#x3D;6244670" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>NetEaseM</a>
       </span>
-    
   </div>
 
 
@@ -497,17 +350,23 @@
       </div>
     </main>
 
-    <footer id="footer" class="footer">
+    <footer class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love" id="animate">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
   <span class="author" itemprop="copyrightHolder">ray</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
-  <span class="post-meta-divider">|</span>
-  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
 
         
 
@@ -518,86 +377,47 @@
 
 
 
-
-
-
-
-        
       </div>
     </footer>
   </div>
 
   
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
 
 
-  <script src="/lib/anime.min.js?v=3.1.0"></script>
-  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
-<script src="/js/schemes/pisces.js?v=7.4.0"></script>
-<script src="/js/next-boot.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<script src="/js/next-boot.js"></script>
 
 
 
 
   
 
-  
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   
 
-<script>
-  function loadCount() {
-    var d = document, s = d.createElement('script');
-    s.src = 'https://henrayluo.disqus.com/count.js';
-    s.id = 'dsq-count-scr';
-    (d.head || d.body).appendChild(s);
-  }
-  // defer loading until the whole page loading is completed
-  window.addEventListener('load', loadCount, false);
-</script>
-<script>
-  function disqus_config() {
-    this.page.url = "http://henray.me/2016/11/15/2016-11-15-wechat-app-architecture-description/";
-    this.page.identifier = "2016/11/15/2016-11-15-wechat-app-architecture-description/";
-    this.page.title = 'WeChat Architecture';};
-  function loadComments() {
-    if (window.DISQUS) {
-      DISQUS.reset({
-        reload: true,
-        config: disqus_config
-      });
-    } else {
-      var d = document, s = d.createElement('script');
-      s.src = 'https://henrayluo.disqus.com/embed.js';
-      s.setAttribute('data-timestamp', '' + +new Date());
-      (d.head || d.body).appendChild(s);
-    }
-  }
-    window.addEventListener('load', loadComments, false);
   
-</script>
 
 </body>
 </html>
