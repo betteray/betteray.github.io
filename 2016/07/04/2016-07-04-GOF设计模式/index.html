@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.0">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.0">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.0" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.0">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.0',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: '',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="设计模式简介 每一个模式描述了一个在我们周围不断重复发生的问题,以及该问题的解决方案的核心。 ——Christopher Alexande  设计模式描述了软件设计过程中某一类常见问题的一般性的解决方案。  面向对象设计模式描述了面向对象设计过程中、特定场景下、类与相互通信的对象之间常见的组织关系。">
+<meta name="keywords" content="设计模式,GOF">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GOF设计模式">
+<meta property="og:url" content="http://henray.me/2016/07/04/2016-07-04-GOF设计模式/index.html">
+<meta property="og:site_name" content="ray&#39;s Notes">
+<meta property="og:description" content="设计模式简介 每一个模式描述了一个在我们周围不断重复发生的问题,以及该问题的解决方案的核心。 ——Christopher Alexande  设计模式描述了软件设计过程中某一类常见问题的一般性的解决方案。  面向对象设计模式描述了面向对象设计过程中、特定场景下、类与相互通信的对象之间常见的组织关系。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2021-11-11T10:10:38.219Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="GOF设计模式">
+<meta name="twitter:description" content="设计模式简介 每一个模式描述了一个在我们周围不断重复发生的问题,以及该问题的解决方案的核心。 ——Christopher Alexande  设计模式描述了软件设计过程中某一类常见问题的一般性的解决方案。  面向对象设计模式描述了面向对象设计过程中、特定场景下、类与相互通信的对象之间常见的组织关系。">
+  <link rel="canonical" href="http://henray.me/2016/07/04/2016-07-04-GOF设计模式/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>GOF设计模式 | ray's Notes</title>
+  <meta name="generator" content="Hexo 3.9.0">
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">ray's Notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">Read The Fucking Source Code !</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+      
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>Home</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>Archives</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>Categories</a>
+
+  </li>
+      
+      
+      
+        
+        <li class="menu-item menu-item-about">
+      
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>About</a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+      <article itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block post">
+    <link itemprop="mainEntityOfPage" href="http://henray.me/2016/07/04/2016-07-04-GOF设计模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ray">
+      <meta itemprop="description" content="Stay Hungry , Stay Foolish !">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ray's Notes">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">GOF设计模式
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2016-07-04 10:20:53" itemprop="dateCreated datePublished" datetime="2016-07-04T10:20:53+00:00">2016-07-04</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/程序架构/" itemprop="url" rel="index"><span itemprop="name">程序架构</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="fa fa-comment-o"></i>
+      </span>
+        
+      
+      <span class="post-meta-item-text">Disqus: </span>
+    
+    <a title="disqus" href="/2016/07/04/2016-07-04-GOF设计模式/#comments" itemprop="discussionUrl"><span class="post-comments-count disqus-comment-count" data-disqus-identifier="2016/07/04/2016-07-04-GOF设计模式/" itemprop="commentCount"></span></a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h4 id="设计模式简介"><a href="#设计模式简介" class="headerlink" title="设计模式简介"></a>设计模式简介</h4><ul>
+<li><p>每一个模式描述了一个在我们周围不断重复发生的问题,以及该问题的解决方案的核心。 ——Christopher Alexande</p>
+</li>
+<li><p>设计模式描述了软件设计过程中某一类常见问题的一般性的解决方案。</p>
+</li>
+<li><p>面向对象设计模式描述了面向对象设计过程中、特定场景下、类与相互通信的对象之间常见的组织关系。</p>
+</li>
+</ul>
+<a id="more"></a>
+
+<h4 id="GoF-23-种设计模式"><a href="#GoF-23-种设计模式" class="headerlink" title="GoF 23 种设计模式"></a>GoF 23 种设计模式</h4><ul>
+<li><p>历史性著作《设计模式:可复用面向对象软件的基础》一书中描述了23种经典面向对象设计模式,创立了模式在软件设计中的地位。该书 四位作者被人们并称为Gang of Four (GoF),“四人组”,该书描述 的23种经典设计模式又被人们称为GoF 23 种设计模式</p>
+</li>
+<li><p>由于《设计模式:可复用面向对象软件的基础》一书确定了设计模式的地位,人们通常所说的设计模式隐含地表示“面向对象设计模式”。但这并不意味“设计模式”就等于“面向对象设计模式”,也不意味着GoF23种模式就表示了所有的“面向对象设计模式”。除了“面向对象设计模 式”外,还有其他设计模式。除了GoF 23种设计模式外,还有更多的 面向对象设计模式。</p>
+</li>
+<li><p>GoF 23 种设计模式是学习面向对象设计模式的起点,而非终点。</p>
+</li>
+</ul>
+<h4 id="设计模式与面向对象"><a href="#设计模式与面向对象" class="headerlink" title="设计模式与面向对象"></a>设计模式与面向对象</h4><ul>
+<li><p>面向对象设计模式解决的是“类与相互通信的对象之间的组织关系,包括它们的角色、职责、协作方式几个方面。</p>
+</li>
+<li><p>面向对象设计模式是“好的面向对象设计”,所谓“好的面向对象设计”是 那些可以满足 “应对变化,提高复用”的设计 。</p>
+</li>
+<li><p>面向对象设计模式描述的是软件设计,因此它是独立于编程语言的,但是面向对象设计模式的最终实现仍然要使用面向对象编程语言来表达。</p>
+</li>
+<li><p>面向对象设计模式不像算法技巧,可以照搬照用,它是建立在对“面向对象”纯熟、深入的理解的基础上的经验性认识。掌握面向对象设 计模式的前提是首先掌握“面向对象”!</p>
+</li>
+</ul>
+<h4 id="从编程语言直观了解面向对象"><a href="#从编程语言直观了解面向对象" class="headerlink" title="从编程语言直观了解面向对象"></a>从编程语言直观了解面向对象</h4><ul>
+<li><p>各种面向对象编程语言相互有别,但都能看到它们对面向对象三大机 制的支持,即: “封装、继承、多态”。1. 封装,隐藏内部实现。2. 继承,复用现有代码。3. 多态,改写对象行为。</p>
+</li>
+<li><p>使用面向对象编程语言,可以推动程序员以面向对象的思维来思考软件设计结构,从而强化面向对象的编程范式。</p>
+</li>
+<li><p>C#是一门支持面向对象编程的优秀语言,包括:各种级别的封装支持;单实现继承+多接口实现;抽象方法与虚方法重写。</p>
+</li>
+</ul>
+<h4 id="但OOPL并非面向对象的全部"><a href="#但OOPL并非面向对象的全部" class="headerlink" title="但OOPL并非面向对象的全部"></a>但OOPL并非面向对象的全部</h4><ul>
+<li><p>通过面向对象编程语言(OOPL)认识到的面向对象,并不是面向对象的全部,甚至只是浅陋的面向对象。</p>
+</li>
+<li><p>OOPL的三大机制 “封装、继承、多态”可以表达面向对象的所有概念,但这三大机制本身并没有刻画出面向对象的核心精神。换言之,既可以用这三大机制做出“好的面向对象设计”,也可以用这三大机制做出“差的面向对象设计”。不是使用了面向对象的语言(例如C#), 就实现了面向对象的设计与开发!因此我们不能依赖编程语言的面向对象机制,来掌握面向对象。</p>
+</li>
+<li><p>OOPL没有回答面向对象的根本性问题——我们为什么要使用面向对象?我们应该怎样使用三大机制来实现“好的面向对象”? 我们应该遵 循什么样的面向对象原则?</p>
+</li>
+<li><p>任何一个严肃的面向对象程序员(例如C#程序员),都需要系统地学习面向对象的知识,单纯从编程语言上获得的面向对象知识,不能够 胜任面向对象设计与开发。</p>
+</li>
+</ul>
+<h4 id="重新认识面向对象"><a href="#重新认识面向对象" class="headerlink" title="重新认识面向对象"></a>重新认识面向对象</h4><ul>
+<li><p>对于前面的例子,从宏观层面来看,面向对象的构建方式更能适应软件的变化,能将变化所带来的影响减为最小.</p>
+</li>
+<li><p>从微观层面来看,面向对象的方式更强调各个类的“责任”,新增员工类型不会影响原来员工类型的实现代码——这更符合真实的世界,也更能控制变化所影响的范围,毕竟Engineer类不应该为 新增的“钟点 工”来买单……</p>
+</li>
+<li><p>对象是什么?</p>
+</li>
+</ul>
+<p>1.从概念层面讲,对象是某种拥有责任的抽象。<br>2.从规格层面讲,对象是一系列可以被其他对象使用的公共接口。<br>3.从语言实现层面来看,对象封装了代码和数据。</p>
+<ul>
+<li>有了这些认识之后,怎样才能设计“好的面向对象”?</li>
+</ul>
+<p>1.遵循一定的面向对象设计原则。<br>2.熟悉一些典型的面向对象设计模式。</p>
+<h4 id="从设计原则到设计模式"><a href="#从设计原则到设计模式" class="headerlink" title="从设计原则到设计模式"></a>从设计原则到设计模式</h4><ul>
+<li><p>针对接口编程,而不是针对实现编程：客户无需知道所使用对象的特定类型,只需要知道对象拥有客户所期望的接口。</p>
+</li>
+<li><p>优先使用对象组合,而不是类继承：类继承通常为“白箱复用”,对象组合通常为“黑箱复用”。继承在某种程度上破坏了封装性,子类父类耦合度高;而对象组合则只要求被组合的对 象具有良好定义的接口,耦合度低。</p>
+</li>
+<li><p>封装变化点：使用封装来创建对象之间的分界层,让设计者可以在分界层的一侧进行<br>修改,而不会对另一侧产生不良的影响,从而实现层次间的松耦合。</p>
+</li>
+<li><p>使用重构得到模式：设计模式的应用不宜先入为主,一上来就使用设计模式是对设计模式的最大误用。没有一步到位的设计模式。敏捷 软件开发实践提倡的“Refactoring to Patterns”是目前普遍公认的最好 的使用设计模式的方法。</p>
+</li>
+</ul>
+<h4 id="几条更具体的设计原则"><a href="#几条更具体的设计原则" class="headerlink" title="几条更具体的设计原则"></a>几条更具体的设计原则</h4><ul>
+<li><p>单一职责原则(SRP):一个类应该仅有一个引起它变化的原因。</p>
+</li>
+<li><p>开放封闭原则(OCP):类模块应该是可扩展的,但是不可修改(对扩展开放,对更改封闭)</p>
+</li>
+<li><p>Liskov 替换原则(LSP):子类必须能够替换它们的基类。</p>
+</li>
+<li><p>依赖倒置原则(DIP):1.高层模块不应该依赖于低层模块,二者都应该依赖于抽象。2.抽象不应该依赖于实现细节,实现细节应该依赖于抽象。</p>
+</li>
+<li><p>接口隔离原则(ISP):不应该强迫客户程序依赖于它们不用的方法。</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            
+              <a href="/tags/GOF/" rel="tag"># GOF</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+                <a href="/2016/07/08/2016-07-08-iOS设计规范整理/" rel="prev" title="iOS设计规范整理">
+                  iOS设计规范整理 <i class="fa fa-chevron-right"></i>
+                </a>
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </div>
+  
+  
+  
+  </article>
+
+  </div>
+
+
+          </div>
+          
+    
+    
+  <div class="comments" id="comments">
+    <div id="disqus_thread">
+      <noscript>Please enable JavaScript to view the comments powered by Disqus.</noscript>
+    </div>
+  </div>
+  
+  
+
+        </div>
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#设计模式简介"><span class="nav-number">1.</span> <span class="nav-text">设计模式简介</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GoF-23-种设计模式"><span class="nav-number">2.</span> <span class="nav-text">GoF 23 种设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#设计模式与面向对象"><span class="nav-number">3.</span> <span class="nav-text">设计模式与面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从编程语言直观了解面向对象"><span class="nav-number">4.</span> <span class="nav-text">从编程语言直观了解面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#但OOPL并非面向对象的全部"><span class="nav-number">5.</span> <span class="nav-text">但OOPL并非面向对象的全部</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#重新认识面向对象"><span class="nav-number">6.</span> <span class="nav-text">重新认识面向对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#从设计原则到设计模式"><span class="nav-number">7.</span> <span class="nav-text">从设计原则到设计模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#几条更具体的设计原则"><span class="nav-number">8.</span> <span class="nav-text">几条更具体的设计原则</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image"
+      src="/uploads/avatar.gif"
+      alt="ray">
+  <p class="site-author-name" itemprop="name">ray</p>
+  <div class="site-description" itemprop="description">Stay Hungry , Stay Foolish !</div>
+</div>
+  <nav class="site-state motion-element">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">19</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/henrayluo" title="GitHub &rarr; https://github.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="mailto:HenrayLuo@gmail.com" title="E-Mail &rarr; mailto:HenrayLuo@gmail.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://weibo.com/2784263224/profile?is_all=1" title="Weibo &rarr; http://weibo.com/2784263224/profile?is_all=1" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://twitter.com/henrayluo" title="Twitter &rarr; https://twitter.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-twitter"></i>Twitter</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://www.instagram.com/henrayluo" title="Instagram &rarr; https://www.instagram.com/henrayluo" rel="noopener" target="_blank"><i class="fa fa-fw fa-instagram"></i>Instagram</a>
+      </span>
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="http://music.163.com/#/user/home?id=6244670" title="NetEaseM &rarr; http://music.163.com/#/user/home?id=6244670" rel="noopener" target="_blank"><i class="fa fa-fw fa-globe"></i>NetEaseM</a>
+      </span>
+    
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ray</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0</div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">Theme – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.0</div>
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+
+
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.0"></script><script src="/js/motion.js?v=7.4.0"></script>
+<script src="/js/schemes/pisces.js?v=7.4.0"></script>
+<script src="/js/next-boot.js?v=7.4.0"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+<script>
+  function loadCount() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://henrayluo.disqus.com/count.js';
+    s.id = 'dsq-count-scr';
+    (d.head || d.body).appendChild(s);
+  }
+  // defer loading until the whole page loading is completed
+  window.addEventListener('load', loadCount, false);
+</script>
+<script>
+  function disqus_config() {
+    this.page.url = "http://henray.me/2016/07/04/2016-07-04-GOF设计模式/";
+    this.page.identifier = "2016/07/04/2016-07-04-GOF设计模式/";
+    this.page.title = 'GOF设计模式';};
+  function loadComments() {
+    if (window.DISQUS) {
+      DISQUS.reset({
+        reload: true,
+        config: disqus_config
+      });
+    } else {
+      var d = document, s = d.createElement('script');
+      s.src = 'https://henrayluo.disqus.com/embed.js';
+      s.setAttribute('data-timestamp', '' + +new Date());
+      (d.head || d.body).appendChild(s);
+    }
+  }
+    window.addEventListener('load', loadComments, false);
+  
+</script>
+
+</body>
+</html>
