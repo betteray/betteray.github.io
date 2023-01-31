@@ -153,6 +153,74 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://betteray.github.io/2023/01/30/Protobuf-Java-%E6%B7%B7%E6%B7%86%E5%90%8E%E9%80%86%E5%90%91%E7%89%B9%E5%BE%81%E7%82%B9%E6%9F%A5%E6%89%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.gif">
+      <meta itemprop="name" content="ray">
+      <meta itemprop="description" content="Stay Hungry , Stay Foolish.">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ray's Notes">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/01/30/Protobuf-Java-%E6%B7%B7%E6%B7%86%E5%90%8E%E9%80%86%E5%90%91%E7%89%B9%E5%BE%81%E7%82%B9%E6%9F%A5%E6%89%BE/" class="post-title-link" itemprop="url">Protobuf Java 混淆后逆向特征点查找</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-01-30 19:54:56" itemprop="dateCreated datePublished" datetime="2023-01-30T19:54:56+00:00">2023-01-30</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <ol>
+<li><p>如下代码中的字符串可以定位 <code>CodedOutputStream</code> 类。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">public static class OutOfSpaceException extends IOException &#123;</span><br><span class="line">  private static final long serialVersionUID = -6947486886997889499L;</span><br><span class="line"></span><br><span class="line">  OutOfSpaceException() &#123;</span><br><span class="line">    super(&quot;CodedOutputStream was writing to a flat byte array and ran &quot; +</span><br><span class="line">          &quot;out of space.&quot;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>CodedInputStream</code> 的定位如下，依然根据字符串。然后可以从其 <code>readString</code> 的方法交叉引用查找生成的类，或者hook此方法也能看到实际相关生成类。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// Here we should refill the buffer as many bytes as possible.</span><br><span class="line">int bytesRead =</span><br><span class="line">    read(</span><br><span class="line">        input,</span><br><span class="line">        buffer,</span><br><span class="line">        bufferSize,</span><br><span class="line">        Math.min(</span><br><span class="line">            //  the size of allocated but unused bytes in the buffer</span><br><span class="line">            buffer.length - bufferSize,</span><br><span class="line">            //  do not exceed the total bytes limit</span><br><span class="line">            sizeLimit - totalBytesRetired - bufferSize));</span><br><span class="line">if (bytesRead == 0 || bytesRead &lt; -1 || bytesRead &gt; buffer.length) &#123;</span><br><span class="line">  throw new IllegalStateException(</span><br><span class="line">      input.getClass()</span><br><span class="line">          + &quot;#read(byte[]) returned invalid result: &quot;</span><br><span class="line">          + bytesRead</span><br><span class="line">          + &quot;\nThe InputStream implementation is buggy.&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (bytesRead == 0 || bytesRead &lt; -1 || bytesRead &gt; this.buffer.length) &#123;</span><br><span class="line">    throw new IllegalStateException(&quot;InputStream#read(byte[]) returned invalid result: &quot; + bytesRead + &quot;\nThe InputStream implementation is buggy.&quot;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>如下代码中的字符串 <code>&quot;byte array&quot;</code> 定位 <code>toByteArray</code> 方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line">public byte[] toByteArray() &#123;</span><br><span class="line">  try &#123;</span><br><span class="line">    final byte[] result = new byte[getSerializedSize()];</span><br><span class="line">    final CodedOutputStream output = CodedOutputStream.newInstance(result);</span><br><span class="line">    writeTo(output);</span><br><span class="line">    output.checkNoSpaceLeft();</span><br><span class="line">    return result;</span><br><span class="line">  &#125; catch (IOException e) &#123;</span><br><span class="line">    throw new RuntimeException(getSerializingExceptionMessage(&quot;byte array&quot;), e);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="https://betteray.github.io/2021/11/10/2021-11-11-%E7%A2%8E%E7%A2%8E%E5%BF%B5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -713,67 +781,10 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="https://betteray.github.io/2017/12/22/2017-12-22-IPAs-Patched/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.gif">
-      <meta itemprop="name" content="ray">
-      <meta itemprop="description" content="Stay Hungry , Stay Foolish.">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="ray's Notes">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2017/12/22/2017-12-22-IPAs-Patched/" class="post-title-link" itemprop="url">IPAs-Patched</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Posted on</span>
-
-              <time title="Created: 2017-12-22 05:48:21" itemprop="dateCreated datePublished" datetime="2017-12-22T05:48:21+00:00">2017-12-22</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="腾讯视频去除播放前120-s广告"><a href="#腾讯视频去除播放前120-s广告" class="headerlink" title="腾讯视频去除播放前120+s广告"></a>腾讯视频去除播放前120+s广告</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#import &lt;Foundation/Foundation.h&gt;</span><br><span class="line">#import &lt;CydiaSubstrate/CydiaSubstrate2.h&gt;</span><br><span class="line"></span><br><span class="line">DefineObjCHook(BOOL, isAdvertisementEnabled, id self, SEL _cmd) &#123;</span><br><span class="line">    return NO;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">__attribute__((constructor))</span><br><span class="line">EXTERN_API_C(&quot;C&quot;) void RemoveAD_Initialize() &#123;</span><br><span class="line">    InstallObjCInstanceHook(objc_getClass(&quot;KKMediaRootViewController&quot;), @selector(isAdvertisementEnabled), isAdvertisementEnabled);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
   </nav>
 
 
@@ -841,7 +852,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -853,7 +864,7 @@
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
